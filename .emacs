@@ -56,6 +56,18 @@
 ;;inhibe mensaje inicial de emacs
 (setq inhibit-startup-message t)
 
+;; para copiar en clipboard al hacer c-w
+(custom-set-variables '(x-select-enable-clipboard t))
+
+;; Asocia octave-mode a archivos *.m (matlab). 
+(add-to-list
+ 'auto-mode-alist
+ '("\\.m$" . octave-mode))
+
+;(add-to-list 'load-file "~/.emacs.d/vendor/mustache-mode.el")
+(load-file "~/.emacs.d/vendor/mustache-mode.el")
+(require 'mustache-mode)
+
 
 ;; To use abbrev-mode, add lines like this:
 ;; (add-hook 'php-mode-hook
@@ -70,3 +82,29 @@
 ;; (c-set-offset 'arglist-close 'c-lineup-arglist-operators))
 ;; (c-set-offset 'arglist-intro '+) ; for FAPI arrays and DBTNG
 ;; (c-set-offset 'arglist-cont-nonempty 'c-lineup-math) ; for DBTNG fields and values
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+;; By default, emacs uses spaces instead of tabs. 
+;; (setq-default indent-tabs-mode nil)
+;; (setq-default tab-width 4)
+
+(add-hook 'php-mode-hook 'my-php-mode-hook)
+(defun my-php-mode-hook ()
+  (setq indent-tabs-mode nil)
+  (let ((my-tab-width 4))
+    (setq tab-width 4)
+    (setq c-basic-indent 4)
+    (setq c-basic-offset 4)
+;;     (set (make-local-variable 'tab-stop-list)
+;;          (number-sequence my-tab-width 200 my-tab-width))))
+))
+;; (global-set-key (kbd "TAB") 'self-insert-command)
+
+(add-hook 'python-mode-hook 'turn-on-auto-fill)
+(add-hook 'python-mode-hook
+  '(lambda() (set-fill-column 80)))
+
+
+;; set home as the default directory
+(setq default-directory "/home/gsc") 

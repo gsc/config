@@ -1,10 +1,15 @@
+;; Lose the UI
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
 (global-font-lock-mode 1)
 
 (if window-system
     (progn
       ;; Colores de la barra de Informacion
-      (set-face-background 'modeline "steel blue")
-      (set-face-foreground 'modeline "black")
+      (set-face-background 'mode-line "steel blue")
+      (set-face-foreground 'mode-line "black")
 
 ;; Muesta el nombre del archivo en la barra de titulo
 (setq frame-title-format "emacs - %f")))
@@ -24,12 +29,12 @@
 (defun down-slightly () (interactive) (scroll-down 5))
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly)
-      
+
 (defun up-one () (interactive) (scroll-up 1))
 (defun down-one () (interactive) (scroll-down 1))
 (global-set-key [S-mouse-4] 'down-one)
 (global-set-key [S-mouse-5] 'up-one)
-      
+
 (defun up-a-lot () (interactive) (scroll-up))
 (defun down-a-lot () (interactive) (scroll-down))
 (global-set-key [C-mouse-4] 'down-a-lot)
@@ -46,11 +51,11 @@
 (setq smtpmail-smtp-service 587)
 
 ;; cargar automáticamente modo php
-(add-to-list 'auto-mode-alist 
+(add-to-list 'auto-mode-alist
    '("\\.php\\'" . php-mode))
-(add-to-list 'auto-mode-alist 
+(add-to-list 'auto-mode-alist
    '("\\.inc\\'" . php-mode))
-(add-to-list 'auto-mode-alist 
+(add-to-list 'auto-mode-alist
    '("\\.tpl\\'" . php-mode))
 
 ;;inhibe mensaje inicial de emacs
@@ -59,7 +64,7 @@
 ;; para copiar en clipboard al hacer c-w
 (custom-set-variables '(x-select-enable-clipboard t))
 
-;; Asocia octave-mode a archivos *.m (matlab). 
+;; Asocia octave-mode a archivos *.m (matlab).
 (add-to-list
  'auto-mode-alist
  '("\\.m$" . octave-mode))
@@ -85,7 +90,7 @@
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-;; By default, emacs uses spaces instead of tabs. 
+;; By default, emacs uses spaces instead of tabs.
 ;; (setq-default indent-tabs-mode nil)
 ;; (setq-default tab-width 4)
 
@@ -99,12 +104,41 @@
 ;;     (set (make-local-variable 'tab-stop-list)
 ;;          (number-sequence my-tab-width 200 my-tab-width))))
 ))
+
+
 ;; (global-set-key (kbd "TAB") 'self-insert-command)
 
 (add-hook 'python-mode-hook 'turn-on-auto-fill)
 (add-hook 'python-mode-hook
-  '(lambda() (set-fill-column 80)))
+  '(lambda() (set-fill-column 80))
+  (lambda ()
+        (setq indent-tabs-mode nil)
+        (setq tab-width 4)
+        (setq python-indent 4)))
+
+(load-file "~/.emacs.d/web-mode.el")
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(load-file "~/.emacs.d/vendor/dockerfile-mode.el")
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+(setq show-trailing-whitespace t)
 
 
 ;; set home as the default directory
-(setq default-directory "/home/gsc") 
+(setq default-directory "/home/gsc")
+
+(add-hook 'before-save-hook #'gofmt-before-save)
+
+(add-to-list 'load-path "/home/gsc/.emacs.d/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "/home/gsc/.emacs.d/ac-dict")
+(ac-config-default)
+
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+
+(setq gofmt-command "/home/gsc/go/bin/goimports")
+(require 'go-mode-load)
+(add-hook 'before-save-hook 'gofmt-before-save)

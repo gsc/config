@@ -69,11 +69,6 @@
  'auto-mode-alist
  '("\\.m$" . octave-mode))
 
-;(add-to-list 'load-file "~/.emacs.d/vendor/mustache-mode.el")
-(load-file "~/.emacs.d/vendor/mustache-mode.el")
-(require 'mustache-mode)
-
-
 ;; To use abbrev-mode, add lines like this:
 ;; (add-hook 'php-mode-hook
 ;; '(lambda () (define-abbrev php-mode-abbrev-table "ex" "extends")))
